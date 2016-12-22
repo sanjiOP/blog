@@ -1,0 +1,43 @@
+虚拟机VirtualBox
+系统环境：centos6.8 32位系统
+mysql下载地址：http://dev.mysql.com/downloads/mysql/
+mysql版本：mysql5.7.16
+软件依赖：yum -y install gcc gcc-c++ ncurses ncurses-devel cmake
+========================================
+mysql5.7.16依赖boost1.59.0，首先需要下载boost1.59.0
+wget https://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz/download
+移动boost压缩包到/usr/local/boost/目录下（无需解压和安装）
+=========================================
+解压mysql压缩包，进入mysql.5.7.16目录
+cmake . -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
+-DMYSQL_DATADIR=/data/mysql \
+-DDOWNLOAD_BOOST=1 \
+-DWITH_BOOST=/usr/local/boost \
+-DSYSCONFDIR=/etc \
+-DWITH_INNOBASE_STORAGE_ENGINE=1 \
+-DWITH_PARTITION_STORAGE_ENGINE=1 \
+-DWITH_FEDERATED_STORAGE_ENGINE=1 \
+-DWITH_BLACKHOLE_STORAGE_ENGINE=1 \
+-DWITH_MYISAM_STORAGE_ENGINE=1 \
+-DENABLED_LOCAL_INFILE=1 \
+-DENABLE_DTRACE=0 \
+-DDEFAULT_CHARSET=utf8 \
+-DDEFAULT_COLLATION=utf8_general_ci \
+-DWITH_EMBEDDED_SERVER=1
+注意：-DDOWNLOAD_BOOST=1 -DWITH_BOOST=/usr/local/boost 指定了boost的配置
+编译安装
+make && make install
+================================================
+mysql配置文件：/etc/my.conf
+指定数据库目录：datadir=/data/mysql
+进入mysql安装目录的bin目录：/usr/local/mysql/bin      
+初始化mysql：./mysqld -initialize
+启动mysql服务：./mysqld
+启动mysql客户端：./mysql -uroot -p
+=================================================
+第一次安装完mysql后，root密码需要重置
+在/etc/my.conf中添加skip-grant-tables=1，这样可以无密码操作
+./mysql -uroot -p进入mysql
+重置root密码：update mysql.user set authentication_string=PASSWORD('123456') where user='root' and host='localhost';
+SET PASSWORD = PASSWORD('123456');
+重新改回/etc/my.conf，重启mysqld

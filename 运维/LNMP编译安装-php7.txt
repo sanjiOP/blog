@@ -1,0 +1,57 @@
+虚拟机VirtualBox
+系统环境：centos6.8 32位系统
+php下载地址：http://php.net/
+php版本：php7.0.12
+软件依赖：yum -y install libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel curl-devel libxslt-devel
+=========================================================
+下载压缩包
+wget http://cn2.php.net/get/php-7.0.12.tar.gz/from/this/mirror
+解压
+tar -zxvf mirror
+进入解压后的目录：配置php项
+注意：lnmp环境下 --enable-fpm必须启动
+./configure --prefix=/usr/local/php7 \
+ --with-curl \
+ --with-freetype-dir \
+ --with-gd \
+ --with-gettext \
+ --with-iconv-dir \
+ --with-kerberos \
+ --with-libdir=lib64 \
+ --with-libxml-dir \
+ --with-mysqli \
+ --with-openssl \
+ --with-pcre-regex \
+ --with-pdo-mysql \
+ --with-pdo-sqlite \
+ --with-pear \
+ --with-png-dir \
+ --with-xmlrpc \
+ --with-xsl \
+ --with-zlib \
+ --enable-fpm \
+ --enable-bcmath \
+ --enable-libxml \
+ --enable-inline-optimization \
+ --enable-gd-native-ttf \
+ --enable-mbregex \
+ --enable-mbstring \
+ --enable-opcache \
+ --enable-pcntl \
+ --enable-shmop \
+ --enable-soap \
+ --enable-sockets \
+ --enable-sysvsem \
+ --enable-xml \
+ --enable-zip
+编译安装
+make && make install
+===========================================================
+php-fpm需要启动后，才可以配合nginx使用
+进入/usr/local/php7/sbin目录，启动php-fpm：./php-fpm
+如果报错配置文件不存在：
+进入/usr/local/php7/etc/
+cp php-fpm.conf.default php-fpm.conf
+进入/usr/local/php/etc/php-fpm.d/
+cp www.conf.default www.conf
+重新启动php-fpm
